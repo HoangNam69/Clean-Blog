@@ -1,0 +1,14 @@
+{
+  "name": "clean-blog",
+  "version": "1.0.0",
+  "description": "Chapter 3: Create web app with express - Ebook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Le Hoang Nam",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
