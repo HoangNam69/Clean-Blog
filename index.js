@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
 app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
 
@@ -8,5 +9,5 @@ app.listen(4000, () => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Xin chào tôi là Lê Hoàng Nam người đã tạo ra trang web này');
+    res.sendFile(path.resolve(__dirname, './pages/index.html'));
 });
