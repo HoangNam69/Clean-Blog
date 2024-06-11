@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const ejs = require('ejs');
+const mongoose = require('mongoose');
+
+// Kết nối MongoDB
+mongoose.connect('mongodb://localhost:27017/clean_blog', { useNewUrlParser: true});
 
 app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
 
