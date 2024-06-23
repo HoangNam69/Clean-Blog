@@ -36,3 +36,7 @@ app.get('/contact', (req, res) => {
 app.get('/post', (req, res) => {
     res.render('post');
 })
+
+app.get('/posts/new', (req, res) => {
+    res.render('create');
+});
