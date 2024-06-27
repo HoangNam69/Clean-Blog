@@ -27,7 +27,8 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', (req, res) => {
-    res.render('index');
+    showAllBlogPost(res);
+    // res.render('index');
 });
 
 app.get('/about', (req, res) => {
@@ -56,6 +57,16 @@ async function createBlogPost(data) {
     console.log(data);
     try {
         await BlogPost.create(data);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+async function showAllBlogPost(res) {
+    try {
+       const posts = await BlogPost.find({});
+        // console.log(allBlogPost)
+        res.render('index', {blogposts: posts});
     } catch (e) {
         console.log(e);
     }
