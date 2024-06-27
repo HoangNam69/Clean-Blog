@@ -4,6 +4,7 @@ const path = require('path');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const BlogPost = require('./models/BlogPost.js');
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
@@ -47,5 +48,15 @@ app.get('/posts/new', (req, res) => {
 
 app.post('/posts/store', (req, res) => {
     console.log(req.body);
+    createBlogPost(req.body);
     res.redirect('/');
 });
+
+async function createBlogPost(data) {
+    console.log(data);
+    try {
+        await BlogPost.create(data);
+    } catch (e) {
+        console.log(e);
+    }
+}
