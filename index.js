@@ -39,8 +39,8 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 })
 
-app.get('/post', (req, res) => {
-    res.render('post');
+app.get('/post/:id', (req, res) => {
+    showBlogPost(req, res);
 })
 
 app.get('/posts/new', (req, res) => {
@@ -67,6 +67,16 @@ async function showAllBlogPost(res) {
        const posts = await BlogPost.find({});
         // console.log(allBlogPost)
         res.render('index', {blogposts: posts});
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+async function showBlogPost(req, res) {
+    try {
+        const post = await BlogPost.findById(req.params.id);
+        console.log(post);
+        res.render('post', {detailPost: post});
     } catch (e) {
         console.log(e);
     }
