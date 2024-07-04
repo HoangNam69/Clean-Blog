@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const BlogPost = require('./models/BlogPost.js');
+const fileUpload = require('express-fileupload')
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
@@ -14,6 +15,8 @@ app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục pu
 app.listen(4000, () => {
     console.log('Server is running on port 4000');
 });
+
+app.use(fileUpload());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,7 +52,15 @@ app.get('/posts/new', (req, res) => {
 
 app.post('/posts/store', (req, res) => {
     console.log(req.body);
-    createBlogPost(req.body);
+    let image = req.files.image;
+    const result = {
+        title: req.body.title,
+        body: req.body.body,
+        image: '/upload/' + image.name
+    }
+    // Xử lý chuyen file hinh anh qua thu muc upload
+    image.mv(path.resolve(__dirname, 'public/upload', image.name));
+    createBlogPost(result);
     res.redirect('/');
 });
 
