@@ -6,18 +6,23 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const BlogPost = require('./models/BlogPost.js');
 const fileUpload = require('express-fileupload')
+// import to module:
+const newPostController = require('./controllers/newPost.js');
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
 
 app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
 
+//  listen port 4000 de chay server
 app.listen(4000, () => {
     console.log('Server is running on port 4000');
 });
 
+// Sử dụng fileUpload để upload file
 app.use(fileUpload());
 
+// Sử dụng body-parser để lấy dữ liệu từ form input xử lý trong req.body 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -46,9 +51,7 @@ app.get('/post/:id', (req, res) => {
     showBlogPost(req, res);
 })
 
-app.get('/posts/new', (req, res) => {
-    res.render('create');
-});
+app.get('/posts/new', newPostController);
 
 app.post('/posts/store', (req, res) => {
     console.log(req.body);
