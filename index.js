@@ -9,11 +9,14 @@ const newPostController = require('./controllers/newPost.js');
 const homeController = require('./controllers/home.js');
 const getPostConntroller = require('./controllers/getPost.js');
 const storePostController = require('./controllers/storePost.js');
+// middleware
+const validateMiddleWare = require('./middleware/validationMiddleware.js');
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
 
 app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
+app.use('/posts/store', validateMiddleWare); // Sử dụng middleware để kiểm tra dữ liệu nhập vào
 
 //  listen port 4000 de chay server
 app.listen(4000, () => {
