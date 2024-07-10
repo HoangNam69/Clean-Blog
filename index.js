@@ -4,11 +4,14 @@ const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
+
 // import to module:
 const newPostController = require('./controllers/newPost.js');
 const homeController = require('./controllers/home.js');
 const getPostConntroller = require('./controllers/getPost.js');
 const storePostController = require('./controllers/storePost.js');
+const newUserController = require('./controllers/newUser.js');
+
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
 
@@ -37,7 +40,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Sử dụng EJS
 app.set('view engine', 'ejs');
 
-
 app.get('/', homeController);
 
 app.get('/about', (req, res) => {
@@ -53,3 +55,5 @@ app.get('/post/:id', getPostConntroller);
 app.get('/posts/new', newPostController);
 
 app.post('/posts/store', storePostController);
+
+app.get('/auth/register', newUserController);
