@@ -11,6 +11,7 @@ const homeController = require('./controllers/home.js');
 const getPostConntroller = require('./controllers/getPost.js');
 const storePostController = require('./controllers/storePost.js');
 const newUserController = require('./controllers/newUser.js');
+const storeUserController = require('./controllers/storeUser.js');
 
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
@@ -57,3 +58,5 @@ app.get('/posts/new', newPostController);
 app.post('/posts/store', storePostController);
 
 app.get('/auth/register', newUserController);
+
+app.post('/users/register', storeUserController);
