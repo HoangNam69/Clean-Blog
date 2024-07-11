@@ -14,9 +14,15 @@ const newUserController = require('./controllers/newUser.js');
 const storeUserController = require('./controllers/storeUser.js');
 const loginController = require('./controllers/login.js');
 const loginUserController = require('./controllers/loginUser.js');
+const expressSession = require('express-session');
 
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
+
+// Sử dụng express-session
+app.use(expressSession({
+    secret: 'keyboard cat'
+}));
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
