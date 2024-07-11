@@ -19,16 +19,20 @@ const expressSession = require('express-session');
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
 
-// Sử dụng express-session
-app.use(expressSession({
-    secret: 'keyboard cat'
-}));
+
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
 
 app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
 app.use('/posts/store', validateMiddleWare); // Sử dụng middleware để kiểm tra dữ liệu nhập vào
+
+// Sử dụng express-session
+app.use(expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
 
 //  listen port 4000 de chay server
 app.listen(4000, () => {
