@@ -19,13 +19,31 @@ const expressSession = require('express-session');
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
 
-
-
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
 
-app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
-app.use('/posts/store', validateMiddleWare); // Sử dụng middleware để kiểm tra dữ liệu nhập vào
+// Sử dụng file tĩnh trong thư mục public
+app.use(express.static('public'));
+
+//  listen port 4000 de chay server
+app.listen(4000, () => {
+    console.log('Server is running on port 4000');
+});
+
+// Sử dụng body-parser để lấy dữ liệu từ form input xử lý trong req.body 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Sử dụng fileUpload để upload file
+app.use(fileUpload());
+
+// Sử dụng middleware để kiểm tra dữ liệu nhập vào
+app.use('/posts/store', validateMiddleWare);
+
+
+// app.get('/', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, './pages/index.html'));
+// });
 
 // Sử dụng express-session
 app.use(expressSession({
@@ -33,22 +51,6 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false
 }));
-
-//  listen port 4000 de chay server
-app.listen(4000, () => {
-    console.log('Server is running on port 4000');
-});
-
-// Sử dụng fileUpload để upload file
-app.use(fileUpload());
-
-// Sử dụng body-parser để lấy dữ liệu từ form input xử lý trong req.body 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.get('/', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, './pages/index.html'));
-// });
 
 // Sử dụng EJS
 app.set('view engine', 'ejs');
