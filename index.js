@@ -15,6 +15,7 @@ const storeUserController = require('./controllers/storeUser.js');
 const loginController = require('./controllers/login.js');
 const loginUserController = require('./controllers/loginUser.js');
 const expressSession = require('express-session');
+const logoutController = require('./controllers/logout.js');
 
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
@@ -86,3 +87,5 @@ app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserControll
 app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
 
 app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController);
+
+app.get('/auth/logout', logoutController);
