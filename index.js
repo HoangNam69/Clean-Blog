@@ -54,6 +54,12 @@ app.use(expressSession({
     saveUninitialized: false
 }));
 
+global.loggedIn = null; // global variable can be used in all files EJS
+app.use('*', (req, res, next) => {
+    loggedIn = req.session.userId;
+    next();
+});
+
 // Sử dụng EJS
 app.set('view engine', 'ejs');
 
