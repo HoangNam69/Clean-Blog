@@ -18,6 +18,7 @@ const expressSession = require('express-session');
 
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
+const authMiddleware = require('./middleware/authMiddleware.js');
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
@@ -67,7 +68,7 @@ app.get('/contact', (req, res) => {
 
 app.get('/post/:id', getPostConntroller);
 
-app.get('/posts/new', newPostController);
+app.get('/posts/new', authMiddleware, newPostController);
 
 app.post('/posts/store', storePostController);
 
