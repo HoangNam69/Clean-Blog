@@ -77,7 +77,7 @@ app.get('/post/:id', getPostConntroller);
 
 app.get('/posts/new', authMiddleware, newPostController);
 
-app.post('/posts/store', storePostController);
+app.post('/posts/store', authMiddleware, storePostController);
 
 app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController);
 
