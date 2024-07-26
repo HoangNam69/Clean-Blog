@@ -19,6 +19,7 @@ const expressSession = require('express-session');
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
 const authMiddleware = require('./middleware/authMiddleware.js');
+const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware.js');
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
@@ -72,10 +73,10 @@ app.get('/posts/new', authMiddleware, newPostController);
 
 app.post('/posts/store', storePostController);
 
-app.get('/auth/register', newUserController);
+app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController);
 
-app.post('/users/register', storeUserController);
+app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserController);
 
-app.get('/auth/login', loginController);
+app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
 
-app.post('/users/login', loginUserController);
+app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController);
