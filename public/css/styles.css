@@ -10687,6 +10687,18 @@ header.masthead:before {
   background-color: #212529;
   opacity: 0.5;
 }
+
+.header--not-found {
+  
+  padding-top: 25rem !important;
+  padding-bottom: 25rem !important;
+}
+
+.page-heading__not-found--bubble {
+  position: absolute;
+  color: #fff;
+}
+
 header.masthead .page-heading,
 header.masthead .post-heading,
 header.masthead .site-heading {

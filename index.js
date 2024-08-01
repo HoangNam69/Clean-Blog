@@ -15,36 +15,51 @@ const storeUserController = require('./controllers/storeUser.js');
 const loginController = require('./controllers/login.js');
 const loginUserController = require('./controllers/loginUser.js');
 const expressSession = require('express-session');
+const logoutController = require('./controllers/logout.js');
 
 // middleware
 const validateMiddleWare = require('./middleware/validationMiddleware.js');
-
-// Sử dụng express-session
-app.use(expressSession({
-    secret: 'keyboard cat'
-}));
+const authMiddleware = require('./middleware/authMiddleware.js');
+const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware.js');
 
 // Kết nối MongoDB
 mongoose.connect('mongodb://localhost:27017/clean_blog');
 
-app.use(express.static('public')); // Sử dụng file tĩnh trong thư mục public
-app.use('/posts/store', validateMiddleWare); // Sử dụng middleware để kiểm tra dữ liệu nhập vào
+// Sử dụng file tĩnh trong thư mục public
+app.use(express.static('public'));
 
 //  listen port 4000 de chay server
 app.listen(4000, () => {
     console.log('Server is running on port 4000');
 });
 
-// Sử dụng fileUpload để upload file
-app.use(fileUpload());
-
 // Sử dụng body-parser để lấy dữ liệu từ form input xử lý trong req.body 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Sử dụng fileUpload để upload file
+app.use(fileUpload());
+
+// Sử dụng middleware để kiểm tra dữ liệu nhập vào
+app.use('/posts/store', validateMiddleWare);
+
+
 // app.get('/', (req, res) => {
 //     res.sendFile(path.resolve(__dirname, './pages/index.html'));
 // });
+
+// Sử dụng express-session
+app.use(expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+
+global.loggedIn = null; // global variable can be used in all files EJS
+app.use('*', (req, res, next) => {
+    loggedIn = req.session.userId;
+    next();
+});
 
 // Sử dụng EJS
 app.set('view engine', 'ejs');
@@ -61,14 +76,18 @@ app.get('/contact', (req, res) => {
 
 app.get('/post/:id', getPostConntroller);
 
-app.get('/posts/new', newPostController);
+app.get('/posts/new', authMiddleware, newPostController);
 
-app.post('/posts/store', storePostController);
+app.post('/posts/store', authMiddleware, storePostController);
 
-app.get('/auth/register', newUserController);
+app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController);
 
-app.post('/users/register', storeUserController);
+app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserController);
 
-app.get('/auth/login', loginController);
+app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
 
-app.post('/users/login', loginUserController);
+app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController);
+
+app.get('/auth/logout', logoutController);
+
+app.use((req, res) => res.render('notfound'));
